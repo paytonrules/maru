@@ -2,3 +2,4 @@ pom.xml
 lib
 classes
 .DS_Store
+bin/ghost/monkey.jar

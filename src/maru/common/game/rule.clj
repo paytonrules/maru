@@ -11,7 +11,13 @@
 ; Given current board, color and position of a stone, count the number of its liberties.
 ; Definition of a liberty: http://senseis.xmp.net/?Liberty
 ; Definition of a group: http://senseis.xmp.net/?Group
-; (defn liberty-count [board color pos] count)
+(defn liberty-count [board color pos] 
+  (let [move (get board pos)]
+    (cond 
+      (= move nil) 0
+      :else 2)))
+ 
+
 
 ; Given current board and color of player, return a list of all atari moves on the board
 ; Definition of atari: http://senseis.xmp.net/?Atari
