@@ -12,7 +12,7 @@
         current-board (board/set-stone board point color)
         enemies (group/find-enemies current-board point color)
         ally (group/find-ally current-board point color)]
-    (and (reduce #(or %1 (> (count (:liberties %2)) 0)) true enemies)
+    (and (reduce #(and %1 (> (count (:liberties %2)) 0)) true enemies)
          (= (count (:liberties ally)) 0))))
 
 (defn legal? [board x y color]
@@ -23,9 +23,3 @@
 
 (defn all-legal-moves [board color]
   (filter #(legal? board (board/to-x %) (board/to-y %) color) (range 0 (* state/size state/size))))
-
-; point is ko => false
-; point is out of bound => false
-; point is not empty => false
-; point can kill an adjacent enemies group => true
-; point is not suicide => true

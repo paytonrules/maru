@@ -7,7 +7,8 @@
 
 (defn ally? [board neighbor color] (= color (board/color board neighbor)))
 
-(defn unique-ally? [board neighbor color allies] (and (ally? board neighbor color) (utility/!contains allies neighbor)))
+(defn unique-ally? [board neighbor color allies]
+  (and (ally? board neighbor color) (not (.contains allies neighbor))))
 
 (defn find-liberty-helper [board point]
   (let [neighbors (board/find-neighbors point)]
@@ -18,13 +19,14 @@
     (let [stone (first stones)]
       (if (= 0 (count stones))
         (set liberties)
-        (recur (rest stones) (clojure.set/union (find-liberty-helper board stone) liberties))))))
+        (recur (rest stones)
+          (clojure.set/union (find-liberty-helper board stone) liberties))))))
 
 (defn find-ally-recursive [board neighbor color allies]
   (let [allies (cons neighbor allies)
         neighbors (board/find-neighbors neighbor)]
     (set (reduce
-      #(if (and (ally? board %2 color) (utility/!contains %1 %2)) (find-ally-recursive board %2 color %1) %1)
+      #(if (and (ally? board %2 color) (not (.contains %1 %2))) (find-ally-recursive board %2 color %1) %1)
         allies neighbors))))
 
 (defn find-ally [board point color]
