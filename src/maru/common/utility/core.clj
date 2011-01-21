@@ -13,6 +13,29 @@
 
 (defn insert-last [ls elm] (concat ls (list elm)))
 
-(defn char-to-digit [ch] (- (int ch) 65))
+; ToDo: Fix the I/J bug
 
-(defn string-to-integer [s] (Integer/parseInt s))
+(defn letter-to-digit [ch] (- (int ch) 65))
+
+(defn digit-to-letter [d] (char (+ 65 d)))
+
+(defn string-to-digit [s] (Integer/parseInt s))
+
+(defn !contains [container element] (not (.contains container element)))
+
+(defn point-from-string [string size]
+  (let [x (letter-to-digit (first string))
+        y (string-to-digit (remove-string-upto string 1))]
+  (+ x (* (- size y) size))))
+
+(defn string-from-point [point size]
+  (let [x (rem point size)
+        y (- (dec size) (int (/ point size)))]
+  (str (digit-to-letter x) (inc y))))
+
+; ToDo: solve circular dependency with board
+(defn string-to-color [string]
+  (cond
+    (or (= "b" string) (= "B" string)) 1
+    (or (= "w" string) (= "W" string)) 2
+    :else 0))
